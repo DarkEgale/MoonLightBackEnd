@@ -3,7 +3,7 @@ import User from "../models/user.model.js";
 import response from "../helpers/response.js";
 export const protect = async (req, res, next) => {
     try {
-        const token = req.cookies.tokens
+        const token = req.cookies.token
         if (!token) {
             return response(res, 403, false, "Unauthorize can not find token")
         }

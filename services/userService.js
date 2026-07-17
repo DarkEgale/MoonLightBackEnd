@@ -3,32 +3,26 @@ import genToken from "../helpers/genToken.js";
 import User from "../models/user.model.js";
 import verifyHash from "../helpers/verifyHash.js";
 
-export const userRegistration = async (userData) => {
+//change password
+export const changePassword = async (userId, currentPassword, newPassword) => {
     try {
-        const exists = await User.findOne({ email: userData.email });
-
-        if (exists) {
-            throw new Error("email exists");
+        const user = await User.findById(userId);
+        if (!user) {
+            throw new Error("User not found");
         }
 
-        const hashedPassword = await hashPassword(userData.password);
+        const isMatch = await verifyHash(currentPassword, user.password);
+        if (!isMatch) {
+            throw new Error("Current password is incorrect");
+        }
 
-        const newUser = await User.create({
-            name: userData.name,
-            phone: userData.phone,
-            email: userData.email,
-            password: hashedPassword,
-        });
+        const hashedPassword = await hashPassword(newPassword);
+        user.password = hashedPassword;
+        await user.save();
 
-        const token = await genToken(newUser._id);
-
-        return {
-            user: newUser,
-            token,
-        };
-
+        return { message: "Password changed successfully" };
     } catch (error) {
-        throw error
+        throw error;
     }
 };
 
@@ -66,6 +60,19 @@ export const getMe = async (id) => {
         }
     } catch (error) {
         throw new Error(`Error during getting me: ${error.message}`)
+    }
+}
+
+// get all users (admin only)
+export const getAllUsers = async () => {
+    try {
+        const users = await User.find({}).select("-password").populate("shop")
+        if (!users || users.length === 0) {
+            throw new Error("No users found")
+        }
+        return users
+    } catch (error) {
+        throw new Error(`Error getting users: ${error.message}`)
     }
 }
 

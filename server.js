@@ -6,6 +6,8 @@ import express from 'express';
 import rateLimit from "express-rate-limit";
 import cookieParser from "cookie-parser";
 import authRouter from "./router/authRouter.js";
+import adminRouter from "./router/adminRoute.js";
+import shopRouter from "./router/shopRoute.js";
 
 
 dotenv.config()
@@ -21,13 +23,15 @@ const app = express();
 
 app.use(morgan('dev'));
 app.use(cors({
-    origin: "*",
+    origin: "http://localhost:5173",
     credentials: true
 }))
 app.use(express.json())
 app.use(cookieParser())
 
 app.use('/api/auth', authRouter)
+app.use('/api/admin', adminRouter)
+app.use('/api/shop', shopRouter)
 
 
 

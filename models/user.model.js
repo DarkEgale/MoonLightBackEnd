@@ -20,6 +20,16 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: [true, "Password field not be empty"]
+    },
+    role: {
+        type: String,
+        enum: ['admin', 'user', 'owner'],
+        default: 'admin'
+    },
+    shop: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Shop',
+        default: null
     }
 }, { timestamps: true })
 

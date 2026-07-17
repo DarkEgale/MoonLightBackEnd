@@ -17,7 +17,8 @@ const connectDB = async () => {
         console.log("Server is connected with Database")
     } catch (error) {
         console.error("Connection failed with Database")
+        console.error(error)
     }
 }
-//export function 
+//export function bh
 export default connectDB;
