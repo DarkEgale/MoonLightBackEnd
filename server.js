@@ -23,7 +23,7 @@ const app = express();
 
 app.use(morgan('dev'));
 app.use(cors({
-    origin: "moon-light-front-end.vercel.app",
+    origin: "moon-light-front-end.vercel.app",//cors client url
     credentials: true
 }))
 app.use(express.json())
