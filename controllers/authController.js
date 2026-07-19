@@ -9,8 +9,8 @@ export const Login = async (req, res) => {
         const result = await userLogin({ email, password })
         const cookieOption = ({
             httpOnly: true,
-            sameSite: 'lax',
-            secure: false,
+            sameSite: 'none',//for production
+            secure: true,
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
         res.cookie("token", result.token, cookieOption)
